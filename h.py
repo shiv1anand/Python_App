@@ -81,12 +81,12 @@ with tab1:
             action_col1, action_col2 = st.columns(2)
             
             with action_col1:
-                if st.button("✏️ Edit", use_container_width=True, disabled=not selected_contact):
+                if st.button("✏️ Edit", use_container_width=True, disabled=not selected_contact, key="edit_btn"):
                     if selected_contact:
                         index = contact_names.index(selected_contact)
                         st.session_state.edit_mode = True
                         st.session_state.edit_index = index
-                        st.switch_page
+                        st.success(f"✏️ Now editing contact. Go to 'Add/Edit Contact' tab to make changes.")
                         st.rerun()
             
             with action_col2:

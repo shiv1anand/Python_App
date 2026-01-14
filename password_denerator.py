@@ -3,37 +3,69 @@ import random
 import string
 
 def generate_password(length):
-    # Define character sets
+    """
+    generate password:
+    - At least 1 uppercase letter
+    - At least 1 lowercase letter
+    - At least 1 special character
+    """
     uppercase = string.ascii_uppercase
     lowercase = string.ascii_lowercase
-    numbers = string.digits
-    special = '!#$%^&*'
+    digits = string.digits
+    special = '!#$%^&*()_+-=;:,.<>?'
     
-    # Make sure we have at least one of each required type
-    password = []
-    password.append(random.choice(uppercase))
-    password.append(random.choice(lowercase))
-    password.append(random.choice(special))
+    # ensuring every charector of required type is present
+    password = [
+        random.choice(uppercase),
+        random.choice(lowercase),
+        random.choice(special)
+    ]
     
-    # Fill the rest with random characters
-    all_characters = uppercase + lowercase + numbers + special
+    # adding rest ramdom charector
+    all_chars = uppercase + lowercase + digits + special
     for i in range(length - 3):
-        password.append(random.choice(all_characters))
+        password.append(random.choice(all_chars))
     
-    # Shuffle the password
+    # Shufflingcharectors
     random.shuffle(password)
     
-    # Convert list to string
     return ''.join(password)
 
-# App title
-st.title("Password Generator")
+# Streamlit App
+st.set_page_config(page_title="Password Generator", page_icon="🔐")
 
-# Get password length from user
-length = st.number_input("Enter password length:", min_value=6, max_value=20, value=12)
+st.title("🔐 Password Generator")
+st.write("Make secure and strong password")
+
+# Password length input
+length = st.slider(
+    "Select password lenght:",
+    min_value=6,
+    max_value=32,
+    value=12,
+    step=1
+)
+
+st.write(f"Selected length: **{length} characters**")
 
 # Generate button
-if st.button("Generate Password"):
-    new_password = generate_password(length)
-    st.text_area("Your Password:", new_password, height=100)
-    st.write("Copy the password above!")
+if st.button("🔄 Generate Password", type="primary"):
+    password = generate_password(length)
+    st.session_state.password = password
+
+# Display generated password
+if 'password' in st.session_state:
+    st.success("Password successfully generated!")
+    
+    # Password display with copy button
+    st.code(st.session_state.password, language=None)
+    
+    # Info box
+    st.info("""
+    **Password contains:**
+    - ✓ Uppercase letters (A-Z)
+    - ✓ Lowercase letters (a-z)
+    - ✓ Numbers (0-9)
+    - ✓ Special characters (!#$%...)
+    """)
+    

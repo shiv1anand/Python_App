@@ -1,4 +1,5 @@
 import streamlit as st
+st.set_page_config(page_title="Todotask", page_icon="📋")
 
 st.title("📝 To-Do List App")
 
@@ -28,4 +29,5 @@ if st.session_state.tasks:
             st.session_state.tasks.pop(i)
             st.rerun()
 else:
+
     st.info("No tasks yet. Add some!")
